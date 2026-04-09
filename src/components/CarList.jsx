@@ -20,13 +20,18 @@ function CarList() {
     setListings(updated);
   };
 
+  const deleteListing = (id) => {
+  const updated = listings.filter((car) => car.id !== id);
+  setListings(updated);
+};
+
   const handleAddListing = (e) => {
     e.preventDefault();
 
     if (!make || !model || !price) return;
 
     const newListing = {
-      id: listings.length + 1,
+      id: Date.now(),
       make,
       model,
       price: Number(price),
@@ -94,19 +99,35 @@ function CarList() {
             <p>Status: {car.status}</p>
           </div>
 
-          <button
-            onClick={() => toggleStatus(car.id)}
-            style={{
-              backgroundColor: car.status === "Active" ? "red" : "green",
-              color: "white",
-              border: "none",
-              padding: "8px 12px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            {car.status === "Active" ? "Flag" : "Unflag"}
-          </button>
+          <div style={{ display: "flex", gap: "10px" }}>
+  <button
+    onClick={() => toggleStatus(car.id)}
+    style={{
+      backgroundColor: car.status === "Active" ? "red" : "green",
+      color: "white",
+      border: "none",
+      padding: "8px 12px",
+      borderRadius: "5px",
+      cursor: "pointer",
+    }}
+  >
+    {car.status === "Active" ? "Flag" : "Unflag"}
+  </button>
+
+  <button
+    onClick={() => deleteListing(car.id)}
+    style={{
+      backgroundColor: "#333",
+      color: "white",
+      border: "none",
+      padding: "8px 12px",
+      borderRadius: "5px",
+      cursor: "pointer",
+    }}
+  >
+    Delete
+  </button>
+</div>
         </div>
       ))}
     </div>
