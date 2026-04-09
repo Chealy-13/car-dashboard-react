@@ -6,6 +6,7 @@ function CarList() {
     const [make, setMake] = useState("");
     const [model, setModel] = useState("");
     const [price, setPrice] = useState("");
+    const [search, setSearch] = useState("");
 
     const toggleStatus = (id) => {
         const updated = listings.map((car) =>
@@ -47,6 +48,12 @@ function CarList() {
     const totalListings = listings.length;
     const activeListings = listings.filter((car) => car.status === "Active").length;
     const flaggedListings = listings.filter((car) => car.status === "Flagged").length;
+
+    const filteredListings = listings.filter((car) =>
+        `${car.make} ${car.model}`
+            .toLowerCase()
+            .includes(search.toLowerCase())
+    );
 
     return (
         <div style={{ padding: "20px" }}>
@@ -96,6 +103,20 @@ function CarList() {
                     <p>{flaggedListings}</p>
                 </div>
             </div>
+
+            <input
+                type="text"
+                placeholder="Search by make or model..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{
+                    marginBottom: "20px",
+                    padding: "8px",
+                    width: "100%",
+                    maxWidth: "300px",
+                }}
+            />
+
             <form
                 onSubmit={handleAddListing}
                 style={{
@@ -126,7 +147,7 @@ function CarList() {
                 <button type="submit">Add Listing</button>
             </form>
 
-            {listings.map((car) => (
+            {filteredListings.map((car) => (
                 <div
                     key={car.id}
                     style={{
